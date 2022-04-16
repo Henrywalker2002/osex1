@@ -8,11 +8,11 @@ set_menu_choice(){
 clear
 printf 'Options:-'
 printf '\n'
-printf '\ta) Add new Books records\n'
-printf '\tb) Find Books\n'
-printf '\tc) Remove Books\n'
-printf '\td) View Books\n'
-printf '\tf) quit\n'
+printf '\t1) Add new Books records\n'
+printf '\t2) Find Books\n'
+printf '\t3) Remove Books\n'
+printf '\t4) View Books\n'
+printf '\t5) quit\n'
 return
 }
 
@@ -25,24 +25,25 @@ return
 #!!!!!!!!!...........................!!!!!!!!!!!!!!!!
 #This function ask user for details information about book for keeping records
 
+
 add_books(){
 
-printf 'Enter Books category:-'
-read tmp
-liCatNum=${tmp%%,*}
- 
-printf 'Enter Books title:-'
+printf 'Enter Books title: '
 read tmp
 liTitleNum=${tmp%%,*}
  
-printf 'Enter Auther Name:-'
+printf 'Enter Books author: '
 read tmp
 liAutherNum=${tmp%%,*}
  
+printf 'Enter Books year: '
+read tmp
+liyear=${tmp%%,*}
+ 
 printf 'About to add new entry\n'
-printf "$liCatNum\t$liTitleNum\t$liAutherNum\n"
+printf "$liTitleNum\t$liAutherNum\t$liyear\n"
 
-insert_record $liCatNum,$liTitleNum,$liAutherNum
+insert_record $liTitleNum,$liAutherNum,$liyear
  
 return
 }
@@ -98,32 +99,31 @@ view_books(){
   
   cat $record_file
   get_return
-  sleep 3
   return
 }
 
 
-rm -f $temp_file
+rm -rf $temp_file
 if [!-f $record_file];then
 touch $record_file
 fi
 
 
-quit="n"
-while [ "$quit" != "y" ];
+while true
       do
       set_menu_choice
       read menu_choice
       case "$menu_choice" in
-      a) add_books;;
-      b) find_books;;
-      c) remove_books;;
-      d) view_books;;
-      *) exit;;
+      1) add_books;;
+      2) find_books;;
+      3) remove_books;;
+      4) view_books;;
+      5) break;;
       esac
+      read -p "press enter to continue\n"
 done
 # Tidy up and leave
-
 rm -f $temp_file
+
 
 exit 0
